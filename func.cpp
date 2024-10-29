@@ -1,5 +1,5 @@
 #include "header.h"
-mutex g_lock;
+
 
 //Добавление в конец 1й связный колонок
 void AddToEndColon(TablColonNode* ptr, string element){
@@ -786,7 +786,7 @@ void Delete(string condName, string TablName, string index){
         string element="";
         string text = "";
         string ind = "";
-        getline(file, element);
+        if(!getline(file, element)) break;
         for(size_t i = 0; element[i] != ','; i++){
             ind+= element[i];
         }
@@ -947,7 +947,7 @@ void ClientOrServer(char* buffer){
 
  //Связь с клиентом
  void Communication_With_Client(int server, configuration cond){
-    bool isExit = false;
+    mutex g_lock;
     char buffer[MAX_SIZE_BUF];
         //Копирует сообщение в буфер.
         strcpy(buffer, "=> Server connected!\n");
@@ -956,7 +956,7 @@ void ClientOrServer(char* buffer){
         send(server, buffer, MAX_SIZE_BUF, 0);
         cout<<"=> Connected to the client "<<endl<<"Enter "<<SYMBOL<<" to end the connection\n\n";
         //Если клиент не завершил
-        while(!isExit){
+        while(true){
             AcceptTheMessage(server, buffer);
            if(ExitOrNO(buffer)){
                 break;
@@ -966,11 +966,9 @@ void ClientOrServer(char* buffer){
              cout<<buffer<<endl;
             cout<<"Server : ";
             sendAMessage(server, buffer, cond);
-            cout<<"Запрос выплне"<<endl;
+            cout<<"Запрос выполнен"<<endl;
+            //sleep(5);
             g_lock.unlock();
              
         }
-
-        //cout<<"\n GoodBye..."<<endl;
-        //isExit=false;
  }
