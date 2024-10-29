@@ -3,24 +3,25 @@
 int main(){
     //хранения дескриптора сокета
     int client;
-    //хранения дескриптора сокета, который будет использоваться для связи с клиентом
+    //для связи с клиентом
     int server;
     configuration cond;
     whithFile(cond);
     NewFile(cond);
 
-    //Сокет — это виртуальная конструкция из IP-адреса и номера порта
+    
     struct sockaddr_in server_address;
     
     //Создает сокет с использованием протокола TCP (SOCK_STREAM).
     client = socket(AF_INET, SOCK_STREAM, 0);
     ErrorOrNo(client);
 
-    // Функция htons используется для преобразования номера порта в сетевой порядок байтов.
+    //сетевой порядок байтов.
     server_address.sin_port = htons(NUMBER_PORT);
 
-    // Устанавливает семейство адресов на AF_INET, что означает использование IPv4.
-    server_address.sin_family =AF_INET;
+    //использование IPv4.
+    server_address.sin_family = AF_INET;
+    
     //Устанавливает IP-адрес сервера на INADDR_ANY
     server_address.sin_addr.s_addr=htons(INADDR_ANY);
 
